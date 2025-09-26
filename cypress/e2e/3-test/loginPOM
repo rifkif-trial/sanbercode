@@ -1,0 +1,20 @@
+import loginPage from "../../support/pageObjects/loginPage"
+import loginData from "../../fixtures/loginData.json"
+
+describe ('Scenario Verifikasi Fungsi Login', () => {
+    it('TC001-Login dengan username valid & password valid', () => {    
+        loginPage.visitPage()
+        loginPage.inputUsername(loginData.validUsername)
+        loginPage.inputPassword(loginData.validPassword)
+        loginPage.clickLoginBtn()
+        loginPage.assertionLogin()
+    })
+    it('TC002-Login dengan username invalid & password invalid', () => {    
+        loginPage.visitPage()
+        loginPage.inputUsername(loginData.invalidUsername)
+        loginPage.inputPassword(loginData.invalidPassword)
+        loginPage.clickLoginBtn()
+        loginPage.assertionLogin()
+    })
+})
+

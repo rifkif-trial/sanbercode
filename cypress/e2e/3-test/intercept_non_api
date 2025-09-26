@@ -1,0 +1,22 @@
+describe('Scenario Verifikasi Fungsi Login', () => {
+  it('TC001-Login dengan username valid & password valid', () => {
+    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+
+    cy.get('[name="username"]').type('Admin')
+    cy.get('[name="password"]').type('admin123')
+    cy.get('[name="username"]').should('have.value','Admin')
+   
+    cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPhoto/empNumber/7').as('profileImage')
+    // cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index').as('dashboardPage')
+
+    cy.get('[type="submit"]').should('be.visible')
+    cy.get('[type="submit"]').click()
+    
+    // Tunggu request ini selesai
+    cy.wait('@profileImage').its('response.statusCode').should('eq',200)
+    // cy.wait('@dashboardPage').its('response.statusCode').should('eq',200)
+
+    //Assertion sudah login
+    cy.url().should('include','dashboard')
+  });
+});
