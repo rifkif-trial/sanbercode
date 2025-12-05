@@ -1,9 +1,36 @@
-describe ('Verifikasi Fungsi Login', ()=>{
-    it('TC-001-Login dengan Username Valid dan Password Valid', ()=>{
-        cy.visit('https://www.saucedemo.com/')
-        cy.get('#user-name').type('standard_user').should('have.value','standard_user')
-        cy.get('#password').type('secret_sauce')
-        cy.get('[data-test="login-button"]').should('be.visible').click()
-        cy.url().should('include','inventory')
+describe ('API Testing Data Access', () => {
+    it('List Users', ()=> {
+        cy.request('Get', 'https://reqres.in/api/users?page=2')
+            .then((response) => {
+                expect(response.status).to.eq(200)
+                expect(response.body).to.have.property('data')
+                
+            })
+    })
+    it('Single User', ()=> {
+        cy.request('Get', 'https://reqres.in/api/users/2')
+            .then((response) => {
+                expect(response.status).to.eq(200)
+                expect(response.body.data).to.have.property('email')
+                cy.log(JSON.stringify(response.body)); 
+            })
+           
+    })
+    it('Create user', ()=> {
+        cy.request({
+            method:'Post', 
+            url:'https://reqres.in/api/users',
+            body: {
+                     "name": "andi",
+                      "job": "tester"
+            },
+            headers: {
+            'x-api-key':'reqres-free-v1'
+            }
+    })
+            .then((response) => {
+                expect(response.status).to.eq(201)
+                expect(response.body).to.have.property('name','andi')
+        })
     })
 })

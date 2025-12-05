@@ -1,11 +1,11 @@
-describe ('Scenario Verifikasi Fungsi Login', () => {
-    it('TC001-Login dengan username valid & password valid', () => {
-        cy.visit('https://www.saucedemo.com')
-        cy.get('#user-name').type('standard').should('have.value','standard_user')
-        cy.get('#password').type('secret_sauce')
-        // cy.screenshot('manual-screenshot')
-        cy.get('.btn_action').should('be.visible')
-        cy.get('.btn_action').click()
-        cy.url().should('include','inventory')
-    })
-})
+describe('API Testing', () => {
+  it('GET Single User By ID API Testing', () => {
+    cy.request('GET', 'https://reqres.in/api/users/2')
+    .then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.not.to.be.null;
+      cy.log(JSON.stringify(response.body));
+    });
+  });
+});
+ 
