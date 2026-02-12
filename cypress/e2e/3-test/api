@@ -1,44 +1,48 @@
-describe ('API Testing User', () => {
-    it('List Users', () => {
-        cy.request('GET', 'https://reqres.in/api/users?page=2')
-          .then((response) => {
+describe('Authorization API Test', () => {
+    it('Single User', () => {
+        cy.request({
+            method: 'GET',
+            url: 'https://reqres.in/api/users/2',
+            headers: {
+                'x-api-key': 'reqres_62417298abd943b89555ddf97f451142'
+            }
+        }).then((response) => {
             expect(response.status).to.eq(200)
             expect(response.body).to.have.property('data')
-            expect(response.body.data).to.be.an('array')
+        })
+    })
+    it('Create Record', () => {
+        cy.request({
+            method: 'POST',
+            url: 'https://reqres.in/api/users',
+            body: {
+                name: "dudu",
+                job: "qa tester"
+            },
+            headers: {
+                'x-api-key': 'reqres_62417298abd943b89555ddf97f451142'
+            }
+        }).then((response) => {
+            expect(response.status).to.eq(201)
+            expect(response.body).to.have.property('name', 'dudu')
+            expect(response.body).to.have.property('job', 'qa tester')
+        })
+    })
+    it('Update', () => {
+        cy.request({
+            method: 'PUT',
+            url: 'https://reqres.in/api/users/2',
+            body: {
+                name: "dudu",
+                job: "qa tester"
+            },
+            headers: {
+                'x-api-key': 'reqres_62417298abd943b89555ddf97f451142'
+            }
+        }).then((response) => {
+            expect(response.status).to.eq(200)
+            expect(response.body.name).to.eq('dudu')
+            expect(response.body.job).to.eq('qa tester')
         })
     })
 })
-
-    it('Get Single User by ID', () => {
-        cy.request('GET', 'https://reqres.in/api/users/2')
-          .then((response) => {
-            expect(response.status).to.eq(200)
-            expect(response.body).to.have.property('data')
-
-           // const user = response.body.data
-
-           expect(response.body.data).to.have.property('id',5)
-           expect(response.body.data).to.have.property('email')
-          })
-    })
-
-    it('Create User', () => {
-        cy.request({
-          method: 'POST',
-          url: 'https://reqres.in/api/users',
-          body:{
-            name: 'andi',
-            job: 'tester'
-          },
-          headers: {
-            'x-api-key':'reqres-free-v1'
-          }
-        })
-          .then((response) => {
-            expect(response.status).to.eq(201)
-            expect(response.body).to.have.property('id')
-            expect(response.body).to.have.property('name','andi')
-            expect(response.body).to.have.property('job','tester')
-        })
-    })
-
