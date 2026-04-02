@@ -1,48 +1,41 @@
-describe('Authorization API Test', () => {
-    it('Single User', () => {
+describe('Categories', () => {
+    it('single category by ID', () => {
         cy.request({
             method: 'GET',
-            url: 'https://reqres.in/api/users/2',
-            headers: {
-                'x-api-key': 'reqres_62417298abd943b89555ddf97f451142'
-            }
+            url: 'https://api.escuelajs.co/api/v1/categories/1',
         }).then((response) => {
             expect(response.status).to.eq(200)
-            expect(response.body).to.have.property('data')
+            expect(response.body).to.have.property('id')
+            expect(response.body).to.have.property('name')
+            expect(response.body).to.have.property('image')
         })
     })
-    it('Create Record', () => {
+    it('Create a category', () => {
         cy.request({
             method: 'POST',
-            url: 'https://reqres.in/api/users',
+            url: 'https://api.escuelajs.co/api/v1/categories/',
             body: {
-                name: "dudu",
-                job: "qa tester"
+                 "name": "kategori r",
+                 "image": "https://trial-img.png"
             },
-            headers: {
-                'x-api-key': 'reqres_62417298abd943b89555ddf97f451142'
-            }
         }).then((response) => {
             expect(response.status).to.eq(201)
-            expect(response.body).to.have.property('name', 'dudu')
-            expect(response.body).to.have.property('job', 'qa tester')
+            expect(response.body).to.have.property('name', 'kategori r')
+            expect(response.body).to.have.property('image', 'https://trial-img.png')
         })
     })
-    it('Update', () => {
+    it('Update a category', () => {
         cy.request({
             method: 'PUT',
-            url: 'https://reqres.in/api/users/2',
+            url: 'https://api.escuelajs.co/api/v1/categories/1',
             body: {
-                name: "dudu",
-                job: "qa tester"
+               "name": "Updated Name",
+              "image": "https://placeimg.com/640/480/any"
             },
-            headers: {
-                'x-api-key': 'reqres_62417298abd943b89555ddf97f451142'
-            }
         }).then((response) => {
             expect(response.status).to.eq(200)
-            expect(response.body.name).to.eq('dudu')
-            expect(response.body.job).to.eq('qa tester')
+            expect(response.body.name).to.eq('Updated Name')
+            expect(response.body.image).to.eq('https://placeimg.com/640/480/any')
         })
     })
 })
